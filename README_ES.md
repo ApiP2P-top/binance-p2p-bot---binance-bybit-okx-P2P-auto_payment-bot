@@ -8,13 +8,17 @@
 
 ---
 
-# binance-p2p-bot：binance&bybit&okx P2P auto_payment_bot: Bot de Pago Automático por Orden · Verificación de Facturas · Liberación de Criptomonedas
+# binance&bybit&okx P2P auto_payment_bot: Bot de Pago Automático por Orden · Verificación de Facturas · Liberación de Criptomonedas
 
 > Motor de automatización de grado profesional para comerciantes P2P de Binance, Bybit y OKX — **pago automático por orden**, **verificación inteligente de facturas**, **liberación de criptomonedas en milisegundos**, con procesamiento paralelo multi-dispositivo y multi-aplicación.
 
 # [Bot de Pago Automático P2P (Binance & Bybit & OKX) Sitio Oficial](https://apip2p.top)
 
 ## 🎬 Demostración en Video
+
+
+https://github.com/user-attachments/assets/262a41b2-cdcc-4abd-8c8e-4bdb1b566a03
+
 
 [![Ver la Demo](https://img.shields.io/badge/YouTube-Ver_Demo-red?style=for-the-badge&logo=youtube&logoColor=white)](https://www.youtube.com/watch?v=INewAPHXa5c)
 
@@ -61,7 +65,7 @@ Cuando el exchange recibe una orden de compra P2P, el software **automatiza comp
 - **Detección de Órdenes en Tiempo Real**: Ciclo de polling de 5 segundos detecta nuevas órdenes P2P sin retraso
 - **Despacho Inteligente de Dispositivos**: Empareja automáticamente dispositivos inactivos según el método de pago de la orden
 - **Ejecución Automatizada de Pagos**: Completa todo el flujo de transferencia en la aplicación de pago del teléfono — sin intervención humana
-- **Aprendizaje de Flujo de Trabajo**: Graba tutoriales de operación en el primer uso, reproduce automáticamente para escenarios idénticos
+- **Motor de Pago Adaptativo**: El motor de protocolo inteligente se adapta autónomamente a la interfaz de cada app de pago — optimiza continuamente las rutas de ejecución
 - **Soporte Multi-Método de Pago**: Un solo dispositivo puede configurarse con múltiples métodos de pago
 - **Archivo de Capturas de Transferencia**: Captura automáticamente capturas de pantalla de prueba después de cada transferencia
 
@@ -145,12 +149,12 @@ Cuando publica un anuncio de venta P2P y un comprador dice que ha pagado, el sof
 
 ---
 
-### 5. Sistema de Aprendizaje de Flujo de Trabajo (Grabación y Reproducción de Tutoriales)
+### 5. Motor Inteligente de Adaptación de Pagos
 
-- **Grabar Una Vez, Reproducir Para Siempre**: Grabe manualmente un flujo de trabajo una vez; el sistema aprende automáticamente
-- **Sin Programación Requerida**: Use la interfaz visual para grabar — cero código
-- **Indexación Multi-Dimensional**: Tutoriales indexados por Dispositivo × App × Método de Pago × Resolución
-- **Compartir Entre Dispositivos**: Dispositivos con la misma resolución pueden compartir tutoriales
+- **Soporte de Pago Sin Configuración**: El motor reconoce y se adapta automáticamente a cualquier interfaz de app de pago mediante algoritmos de reconocimiento visual propietarios
+- **Sin Programación Requerida**: Simplemente conecte su dispositivo y configure el método de pago — el motor maneja toda la lógica de interacción
+- **Optimización Multi-Dimensional**: Rutas de ejecución optimizadas por Dispositivo × App × Método de Pago para máxima velocidad
+- **Compatibilidad Entre Dispositivos**: Los perfiles de pago son portátiles entre dispositivos con configuraciones similares
 
 ---
 
@@ -233,7 +237,7 @@ Cuando publica un anuncio de venta P2P y un comprador dice que ha pagado, el sof
 
 ## 🌍 Adaptación Regional: Soporte Multi-Mercado Global
 
-A través de su sistema de grabación de tutoriales, `binance&bybit&okx P2P auto_payment_bot` teóricamente soporta **cualquier aplicación de pago Android en el mundo**.
+A través de su motor de adaptación inteligente de pagos, `binance&bybit&okx P2P auto_payment_bot` teóricamente soporta **cualquier aplicación de pago Android en el mundo**.
 
 ### Canales de Pago Soportados
 
@@ -249,7 +253,7 @@ A través de su sistema de grabación de tutoriales, `binance&bybit&okx P2P auto
 | 🇭🇰 Hong Kong | FPS, PayMe | Automatización inteligente |
 | 🇹🇼 Taiwán | Apps Bancarias, LINE Pay | Automatización inteligente |
 | 🇹🇷 Turquía | Papara, İş Bankası | Automatización inteligente |
-| 🌐 Más Mercados | Adaptable a cualquier app vía grabación de tutorial | Extensible |
+| 🌐 Más Mercados | Adaptable a cualquier app mediante automatización inteligente | Extensible |
 
 ---
 
