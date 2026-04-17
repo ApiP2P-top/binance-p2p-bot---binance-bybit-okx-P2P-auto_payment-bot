@@ -8,13 +8,17 @@
 
 ---
 
-#  binance-p2p-bot：binance&bybit&okx P2P auto_payment_bot: Fully Automated Payment-by-Order · Bill Verification · Crypto Release Bot
+# binance&bybit&okx P2P auto_payment_bot: Fully Automated Payment-by-Order · Bill Verification · Crypto Release Bot
 
 > Propesyonal na automation tool para sa mga P2P merchant ng Binance, Bybit & OKX — **awtomatikong bayad ayon sa order**, **matalinong pag-verify ng bill**, **millisecond na pag-release ng crypto**, multi-device parallel processing
 
 # [P2P Auto Payment & Release Bot (Binance & Bybit & OKX) Opisyal na Website](https://apip2p.top)
 
 ## 🎬 Video Demo
+
+
+https://github.com/user-attachments/assets/262a41b2-cdcc-4abd-8c8e-4bdb1b566a03
+
 
 [![Panoorin ang Demo](https://img.shields.io/badge/YouTube-Panoorin_ang_Demo-red?style=for-the-badge&logo=youtube&logoColor=white)](https://www.youtube.com/watch?v=INewAPHXa5c)
 
@@ -60,7 +64,7 @@ Nilulutas ng `binance&bybit&okx P2P auto_payment_bot` ang lahat sa pamamagitan n
 - **Real-time na Pag-detect ng Order**: 5 segundo polling cycle
 - **Matalinong Pagtatalaga ng Device**: Awtomatikong pag-match ng available na device ayon sa payment method
 - **Awtomatikong Pagpapatupad ng Pagbayad**: Kumpletuhin ang buong proseso ng transfer
-- **Pag-aaral ng Proseso**: I-record ang mga tagubilin sa unang pagkakataon, awtomatikong i-replay pagkatapos
+- **Adaptive na Payment Engine**: Awtomatikong nag-a-adapt ang matalinong protocol engine sa interface ng bawat payment app
 - **Multi-Payment Method**: Isang device, maraming payment method
 - **Pag-save ng Screenshot**: Awtomatikong kumuha ng ebidensya pagkatapos ng bawat transaksyon
 
@@ -95,11 +99,11 @@ Nilulutas ng `binance&bybit&okx P2P auto_payment_bot` ang lahat sa pamamagitan n
 
 ---
 
-### 5. Sistema ng Pag-aaral ng Proseso
+### 5. Matalinong Payment Adaptation Engine
 
-- **Isang Beses I-record, Palaging I-replay**
-- **Hindi Kailangan ng Coding**: Visual interface para mag-record
-- **Multi-Dimensional na Index**: Device × App × Method × Resolution
+- **Zero-Config Payment Support**: Awtomatikong nakikilala at nag-a-adapt ang engine sa interface ng anumang payment app
+- **Hindi Kailangan ng Coding**: Ikonekta lang ang device at i-configure ang payment method
+- **Multi-Dimensional na Optimization**: Mga execution path na na-optimize per Device × App × Payment Method
 
 ---
 
@@ -133,7 +137,7 @@ Ang `binance&bybit&okx P2P auto_payment_bot` ay sumusuporta sa teorya sa **anuma
 | 🇻🇳 Vietnam | MoMo, ZaloPay, Vietcombank | Matalinong Automation |
 | 🇹🇭 Thailand | PromptPay, TrueMoney | Matalinong Automation |
 | 🇹🇷 Turkey | Papara, İş Bankası | Matalinong Automation |
-| 🌐 Iba pang Market | Maaaring i-adapt sa pamamagitan ng pag-record ng tagubilin | Extensible |
+| 🌐 Iba pang Market | Maaaring i-adapt sa pamamagitan ng matalinong device automation | Extensible |
 
 ---
 
