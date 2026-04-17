@@ -8,7 +8,7 @@
 
 ---
 
-# binance&bybit&okx P2P auto_payment_bot: Bot de Pago Automático por Orden · Verificación de Facturas · Liberación de Criptomonedas
+# binance-p2p-bot：binance&bybit&okx P2P auto_payment_bot: Bot de Pago Automático por Orden · Verificación de Facturas · Liberación de Criptomonedas
 
 > Motor de automatización de grado profesional para comerciantes P2P de Binance, Bybit y OKX — **pago automático por orden**, **verificación inteligente de facturas**, **liberación de criptomonedas en milisegundos**, con procesamiento paralelo multi-dispositivo y multi-aplicación.
 
