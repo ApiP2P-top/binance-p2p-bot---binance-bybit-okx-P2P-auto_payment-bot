@@ -8,7 +8,7 @@
 
 ---
 
-# binance&bybit&okx P2P auto_payment_bot: Fully Automated Payment-by-Order · Bill Verification · Crypto Release Bot
+# binance-p2p-bot： binance&bybit&okx P2P auto_payment_bot: Fully Automated Payment-by-Order · Bill Verification · Crypto Release Bot
 
 > Professional-grade automation engine for Binance, Bybit & OKX P2P merchants — **auto payment-by-order**, **smart bill verification**, **millisecond crypto release**, with multi-device multi-app parallel processing.
 
