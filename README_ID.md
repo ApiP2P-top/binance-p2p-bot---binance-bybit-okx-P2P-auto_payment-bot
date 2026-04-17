@@ -8,13 +8,17 @@
 
 ---
 
-# binance-p2p-bot：binance&bybit&okx P2P auto_payment_bot: Bot Pembayaran Otomatis per Pesanan · Verifikasi Tagihan · Pelepasan Crypto
+# binance&bybit&okx P2P auto_payment_bot: Bot Pembayaran Otomatis per Pesanan · Verifikasi Tagihan · Pelepasan Crypto
 
 > Mesin otomatisasi profesional untuk merchant P2P Binance, Bybit & OKX — **pembayaran otomatis per pesanan**, **verifikasi tagihan cerdas**, **pelepasan crypto dalam milidetik**, dengan pemrosesan paralel multi-perangkat.
 
 # [Bot Pembayaran & Pelepasan Otomatis P2P (Binance & Bybit & OKX) Situs Resmi](https://apip2p.top)
 
 ## 🎬 Demo Video
+
+
+https://github.com/user-attachments/assets/262a41b2-cdcc-4abd-8c8e-4bdb1b566a03
+
 
 [![Tonton Demo](https://img.shields.io/badge/YouTube-Tonton_Demo-red?style=for-the-badge&logo=youtube&logoColor=white)](https://www.youtube.com/watch?v=INewAPHXa5c)
 
@@ -59,7 +63,7 @@ Dalam perdagangan P2P, merchant menghadapi operasi repetitif yang masif:
 - **Deteksi Pesanan Real-time**: Polling 5 detik mendeteksi pesanan baru
 - **Dispatch Perangkat Cerdas**: Otomatis mencocokkan perangkat idle berdasarkan metode pembayaran
 - **Eksekusi Pembayaran Otomatis**: Menyelesaikan seluruh alur transfer tanpa campur tangan manusia
-- **Pembelajaran Alur Kerja**: Merekam tutorial pada penggunaan pertama, otomatis memutar ulang
+- **Mesin Pembayaran Adaptif**: Mesin protokol cerdas beradaptasi secara otonom dengan antarmuka setiap aplikasi pembayaran
 - **Dukungan Multi-Metode Pembayaran**: Satu perangkat dapat dikonfigurasi dengan beberapa metode
 - **Arsip Screenshot Transfer**: Otomatis menangkap bukti setelah setiap transfer
 
@@ -94,12 +98,12 @@ Dalam perdagangan P2P, merchant menghadapi operasi repetitif yang masif:
 
 ---
 
-### 5. Sistem Pembelajaran Alur Kerja
+### 5. Mesin Adaptasi Pembayaran Cerdas
 
-- **Rekam Sekali, Putar Ulang Selamanya**
-- **Tanpa Pemrograman**: Antarmuka visual untuk merekam
-- **Indeksasi Multi-Dimensi**: Perangkat × Aplikasi × Metode × Resolusi
-- **Berbagi Antar Perangkat**: Resolusi sama = tutorial bersama
+- **Dukungan Pembayaran Tanpa Konfigurasi**: Mesin secara otomatis mengenali dan beradaptasi dengan antarmuka aplikasi pembayaran apa pun melalui algoritma pengenalan visual
+- **Tanpa Pemrograman**: Cukup hubungkan perangkat dan konfigurasikan metode pembayaran
+- **Optimasi Multi-Dimensi**: Jalur eksekusi dioptimalkan per Perangkat × Aplikasi × Metode pembayaran
+- **Kompatibilitas Antar Perangkat**: Profil pembayaran portabel antar perangkat dengan konfigurasi serupa
 
 ---
 
@@ -133,7 +137,7 @@ Dalam perdagangan P2P, merchant menghadapi operasi repetitif yang masif:
 | 🇻🇳 Vietnam | MoMo, ZaloPay, Vietcombank | Otomatisasi cerdas |
 | 🇹🇭 Thailand | PromptPay, TrueMoney, K PLUS | Otomatisasi cerdas |
 | 🇹🇷 Turki | Papara, İş Bankası | Otomatisasi cerdas |
-| 🌐 Pasar Lainnya | Dapat diadaptasi melalui perekaman tutorial | Dapat diperluas |
+| 🌐 Pasar Lainnya | Dapat diadaptasi melalui otomatisasi perangkat cerdas | Dapat diperluas |
 
 ---
 
