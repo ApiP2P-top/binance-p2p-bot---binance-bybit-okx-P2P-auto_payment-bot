@@ -8,7 +8,7 @@
 
 ---
 
-# binance&bybit&okx P2P auto_payment_bot: Sipariş Bazlı Tam Otomatik Ödeme · Fatura Doğrulama · Kripto Serbest Bırakma Botu
+# binance-p2p-bot：binance&bybit&okx P2P auto_payment_bot: Sipariş Bazlı Tam Otomatik Ödeme · Fatura Doğrulama · Kripto Serbest Bırakma Botu
 
 > Binance, Bybit ve OKX P2P tüccarları için profesyonel otomasyon motoru — **sipariş bazlı otomatik ödeme**, **akıllı fatura doğrulama**, **milisaniye kripto serbest bırakma**, çoklu cihaz paralel işleme.
 
