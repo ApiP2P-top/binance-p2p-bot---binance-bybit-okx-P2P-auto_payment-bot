@@ -8,13 +8,17 @@
 
 ---
 
-# binance-p2p-bot：binance&bybit&okx P2P auto_payment_bot: Sipariş Bazlı Tam Otomatik Ödeme · Fatura Doğrulama · Kripto Serbest Bırakma Botu
+# binance&bybit&okx P2P auto_payment_bot: Sipariş Bazlı Tam Otomatik Ödeme · Fatura Doğrulama · Kripto Serbest Bırakma Botu
 
 > Binance, Bybit ve OKX P2P tüccarları için profesyonel otomasyon motoru — **sipariş bazlı otomatik ödeme**, **akıllı fatura doğrulama**, **milisaniye kripto serbest bırakma**, çoklu cihaz paralel işleme.
 
 # [P2P Otomatik Ödeme ve Serbest Bırakma Botu (Binance & Bybit & OKX) Resmi Site](https://apip2p.top)
 
 ## 🎬 Video Demo
+
+
+https://github.com/user-attachments/assets/262a41b2-cdcc-4abd-8c8e-4bdb1b566a03
+
 
 [![Demoyu İzle](https://img.shields.io/badge/YouTube-Demoyu_İzle-red?style=for-the-badge&logo=youtube&logoColor=white)](https://www.youtube.com/watch?v=INewAPHXa5c)
 
@@ -60,7 +64,7 @@ P2P ticaretinde tüccarlar büyük tekrarlayan operasyonlarla karşılaşır:
 - **Gerçek Zamanlı Sipariş Tespiti**: 5 saniye yoklama döngüsü
 - **Akıllı Cihaz Dağıtımı**: Ödeme yöntemine göre boşta olan cihazı eşleştirir
 - **Otomatik Ödeme Yürütme**: Telefondaki ödeme uygulamasında tam transfer akışını tamamlar
-- **İş Akışı Öğrenme**: İlk kullanımda öğretici kaydeder, sonra otomatik tekrar oynatır
+- **Uyarlanabilir Ödeme Motoru**: Akıllı protokol motoru her ödeme uygulamasının arayüzüne otonom olarak uyum sağlar
 - **Çoklu Ödeme Yöntemi Desteği**: Tek cihaz, birden fazla yöntem
 - **Transfer Ekran Görüntüsü Arşivi**: Her transferden sonra kanıt yakalar
 
@@ -95,11 +99,11 @@ P2P ticaretinde tüccarlar büyük tekrarlayan operasyonlarla karşılaşır:
 
 ---
 
-### 5. İş Akışı Öğrenme Sistemi
+### 5. Akıllı Ödeme Uyum Motoru
 
-- **Bir Kez Kaydet, Sonsuza Kadar Oynat**
-- **Programlama Gerektirmez**: Görsel arayüz ile kayıt
-- **Çok Boyutlu İndeksleme**: Cihaz × Uygulama × Yöntem × Çözünürlük
+- **Yapılandırma Gerektirmez**: Motor, herhangi bir ödeme uygulamasının arayüzünü otomatik olarak tanır ve uyum sağlar
+- **Programlama Gerektirmez**: Cihazınızı bağlayın ve ödeme yöntemini yapılandırın — gerisini motor halleder
+- **Çok Boyutlu Optimizasyon**: Cihaz × Uygulama × Ödeme Yöntemi başına optimize edilmiş yürütme yolları
 
 ---
 
@@ -133,7 +137,7 @@ P2P ticaretinde tüccarlar büyük tekrarlayan operasyonlarla karşılaşır:
 | 🇻🇳 Vietnam | MoMo, ZaloPay | Akıllı otomasyon |
 | 🇹🇭 Tayland | PromptPay, TrueMoney | Akıllı otomasyon |
 | 🇹🇷 Türkiye | Papara, İş Bankası, Ziraat | Akıllı otomasyon |
-| 🌐 Diğer Pazarlar | Öğretici kaydı ile uyarlanabilir | Genişletilebilir |
+| 🌐 Diğer Pazarlar | Akıllı cihaz otomasyonu ile uyarlanabilir | Genişletilebilir |
 
 ---
 
