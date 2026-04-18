@@ -8,7 +8,7 @@
 
 ---
 
-# binance&bybit&okx P2P auto_payment_bot：全自动按单付款 · 查账核验 · 自动放币机器人
+# binance-p2p-bot：binance&bybit&okx P2P auto_payment_bot：全自动按单付款 · 查账核验 · 自动放币机器人
 
 > 面向 Binance、Bybit、OKX P2P 商户的专业级自动化交易引擎 —— **按单自动付款**、**智能查账核验**、**秒级自动放币**，支持多设备多支付 App 并行处理。
 
