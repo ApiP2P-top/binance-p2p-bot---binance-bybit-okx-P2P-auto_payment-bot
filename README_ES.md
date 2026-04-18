@@ -116,6 +116,42 @@ class TransferScheduler:
         await device.execute_transfer(task)
 ```
 
+```javascript
+// [Pseudocode] Node.js style — Order polling and device dispatch
+class TransferScheduler {
+    constructor(exchangeClients, devicePool) {
+        this.exchanges  = exchangeClients;
+        this.devicePool = devicePool;
+        this.pollInterval = 5000; // 5s
+    }
+
+    async start() {
+        while (true) {
+            for (const [platform, client] of Object.entries(this.exchanges)) {
+                const orders = await client.getPendingOrders();
+                for (const order of orders) {
+                    if (this.isNewOrder(order)) {
+                        await this.dispatch(order);
+                    }
+                }
+            }
+            await this.sleep(this.pollInterval);
+        }
+    }
+
+    async dispatch(order) {
+        const device = this.devicePool.findIdleDevice(order.paymentMethod);
+        if (!device) return; // No idle device available
+        await device.executeTransfer({
+            orderId: order.id,
+            amount: order.fiatAmount,
+            payeeName: order.counterparty,
+            paymentMethod: order.paymentMethod,
+        });
+    }
+}
+```
+
 ---
 
 ### 2. Verificación Inteligente de Facturas (Motor de Verificación de Depósitos)
@@ -128,6 +164,92 @@ Cuando publica un anuncio de venta P2P y un comprador dice que ha pagado, el sof
 - **Extracción de ID de Transacción Única**: Lee el número de referencia como identificador único global
 - **Protección Anti-Replay**: Cada ID de transacción se registra en una base de datos local — el mismo depósito nunca puede activar dos liberaciones
 
+#### 💡 Concepto de Implementación (Motor de Verificación de Depósitos)
+
+```go
+// [Pseudocode] Go style — Deposit verification with replay-attack protection
+package verifier
+
+type BillVerifyResult struct {
+    Matched     bool
+    Amount      float64
+    SenderName  string
+    UniqueID    string   // Bank Reference Number
+}
+
+type BillVerifier struct {
+    archive    *BillArchive   // Processed transaction archive (anti-replay)
+    tolerance  float64        // Amount tolerance
+}
+
+func (v *BillVerifier) Verify(order P2POrder) (*BillVerifyResult, error) {
+    // 1. Auto-navigate to the payment app's bill page
+    bills, err := v.navigateToBillList(order.PaymentApp)
+    if err != nil {
+        return nil, err
+    }
+
+    // 2. Find a recent transaction matching the expected amount
+    for _, bill := range bills {
+        if math.Abs(bill.Amount - order.FiatAmount) <= v.tolerance {
+            // 3. Open detail page, extract full info
+            detail := v.openBillDetail(bill)
+
+            // 4. Replay-attack check: has this transaction been used before?
+            if v.archive.Exists(detail.UniqueID) {
+                continue  // Already used — skip
+            }
+
+            return &BillVerifyResult{
+                Matched:    true,
+                Amount:     detail.Amount,
+                SenderName: detail.SenderName,
+                UniqueID:   detail.UniqueID,
+            }, nil
+        }
+    }
+    return &BillVerifyResult{Matched: false}, nil
+}
+```
+
+```typescript
+// [Pseudocode] TypeScript style — Bill verification service
+interface BillDetail {
+    amount:     number;
+    senderName: string;
+    uniqueId:   string;   // Transaction unique identifier
+    timestamp:  Date;
+}
+
+class BillVerifyService {
+    private archive: BillArchive;
+    private tolerance = 0.02;  // Amount tolerance
+
+    async verify(order: P2POrder): Promise<VerifyResult> {
+        // Navigate to payment app bill page
+        const bills = await this.navigateToBillList(order.paymentApp);
+
+        // Find a recent transaction matching the expected amount
+        const matched = bills.find(bill =>
+            Math.abs(bill.amount - order.fiatAmount) <= this.tolerance
+            && !this.archive.exists(bill.uniqueId)
+        );
+
+        if (!matched) return { success: false };
+
+        // Record to archive to prevent duplicate release
+        this.archive.record(matched.uniqueId, order.orderId);
+
+        return {
+            success:    true,
+            amount:     matched.amount,
+            senderName: matched.senderName,
+            uniqueId:   matched.uniqueId,
+        };
+    }
+}
+```
+
 ---
 
 ### 3. Ejecución Automatizada de Liberación de Criptomonedas (Activación API en Milisegundos)
@@ -136,6 +258,83 @@ Cuando publica un anuncio de venta P2P y un comprador dice que ha pagado, el sof
 - **Verificación del Resultado de Liberación**: Después de llamar a la API, consulta activamente el estado de la orden
 - **Reintento con Retroceso Exponencial**: Si falla, reintenta automáticamente hasta 3 veces con retroceso exponencial
 - **Adaptador Unificado Tri-Plataforma**: Binance C2C SAPI / Bybit V5 P2P / OKX V5 P2P — interfaz unificada
+
+#### 💡 Concepto de Implementación (Ejecutor de Liberación Automática Multi-Plataforma)
+
+```python
+# [Pseudocode] Cross-platform release executor — adapts Binance / Bybit / OKX
+import asyncio, logging
+
+logger = logging.getLogger("release_executor")
+
+class PlatformAdapterFactory:
+    """Factory pattern: create the appropriate API adapter per exchange"""
+    @staticmethod
+    def create(platform: str, credentials: dict):
+        if platform == "binance":
+            return BinanceP2PAdapter(credentials)
+        elif platform == "bybit":
+            return BybitP2PAdapter(credentials)
+        elif platform == "okx":
+            return OkxP2PAdapter(credentials)
+        raise ValueError(f"Unsupported platform: {platform}")
+
+class ReleaseExecutor:
+    MAX_RETRIES  = 3
+    RETRY_BASE_S = 2   # Exponential backoff base (seconds)
+
+    async def release(self, platform: str, order_id: str, verify_result: dict) -> bool:
+        adapter = PlatformAdapterFactory.create(platform, self.credentials)
+        for attempt in range(self.MAX_RETRIES):
+            try:
+                resp = await adapter.release_order(order_id)
+                if resp.success:
+                    confirmed = await self._poll_completion(adapter, order_id)
+                    if confirmed:
+                        logger.info(f"[RELEASED] {platform} order {order_id}")
+                        self._record_to_archive(order_id, verify_result)
+                        return True
+            except Exception as e:
+                wait = self.RETRY_BASE_S ** (attempt + 1)
+                logger.warning(f"[RETRY {attempt+1}] {order_id}: {e} — retrying in {wait}s")
+                await asyncio.sleep(wait)
+        return False
+```
+
+```rust
+// [Pseudocode] Rust style — Release execution with retry
+use std::time::Duration;
+
+struct ReleaseExecutor {
+    max_retries: u32,
+    retry_base: Duration,
+}
+
+impl ReleaseExecutor {
+    async fn release(&self, platform: &str, order_id: &str) -> Result<bool, Error> {
+        let adapter = create_platform_adapter(platform)?;
+
+        for attempt in 0..self.max_retries {
+            match adapter.release_order(order_id).await {
+                Ok(resp) if resp.success => {
+                    if self.poll_completion(&adapter, order_id).await? {
+                        log::info!("[RELEASED] {} order {}", platform, order_id);
+                        return Ok(true);
+                    }
+                }
+                Err(e) => {
+                    let wait = self.retry_base * 2u32.pow(attempt);
+                    log::warn!("[RETRY {}] {}: {} — retrying in {}s",
+                        attempt + 1, order_id, e, wait.as_secs());
+                    tokio::time::sleep(wait).await;
+                }
+                _ => {}
+            }
+        }
+        Ok(false)
+    }
+}
+```
 
 ---
 
@@ -146,6 +345,73 @@ Cuando publica un anuncio de venta P2P y un comprador dice que ha pagado, el sof
 - **Asignación Inteligente de Tareas**: Empareja automáticamente dispositivos inactivos con la aplicación requerida
 - **Colas de Tareas Independientes**: Cada dispositivo mantiene su propia cola FIFO
 - **Monitoreo de Estado del Dispositivo**: Muestra en tiempo real el estado de conexión, tarea actual y saldo
+- **Aislamiento de Flujos de Trabajo**: Flujos de operación separados para diferentes dispositivos × apps × métodos de pago
+
+#### 💡 Concepto de Implementación (Planificador Paralelo Multi-Dispositivo)
+
+```python
+# [Pseudocode] Multi-device task scheduler — parallel processing + smart dispatch
+from dataclasses import dataclass, field
+from typing import Dict, List
+from collections import deque
+
+@dataclass
+class Device:
+    serial:          str
+    alias:           str
+    status:          str           # idle / busy / offline
+    supported_apps:  List[str]     # ["maya", "gcash", "alipay"]
+    task_queue:      deque = field(default_factory=deque)
+
+class DeviceScheduler:
+    def __init__(self):
+        self.devices: Dict[str, Device] = {}
+
+    def find_idle_device(self, payment_method: str) -> Device | None:
+        """Find an idle device that supports the given payment method"""
+        for device in self.devices.values():
+            if (device.status == "idle"
+                    and payment_method in device.supported_apps):
+                return device
+        return None
+
+    def enqueue_task(self, task: 'TransferTask') -> bool:
+        """Enqueue task to the best available device"""
+        device = self.find_idle_device(task.payment_method)
+        if device:
+            device.task_queue.append(task)
+            return True
+        return False  # No available device
+```
+
+```javascript
+// [Pseudocode] JavaScript style — Device manager
+class DeviceScheduler {
+    constructor() {
+        this.devices = new Map(); // serial → Device
+    }
+
+    findIdleDevice(paymentMethod) {
+        for (const device of this.devices.values()) {
+            if (device.status === 'idle'
+                && device.supportedApps.includes(paymentMethod)) {
+                return device;
+            }
+        }
+        return null;
+    }
+
+    enqueueTask(task) {
+        const device = this.findIdleDevice(task.paymentMethod);
+        if (device) {
+            device.taskQueue.push(task);
+            device.status = 'busy';
+            return true;
+        }
+        return false;
+    }
+}
+```
 
 ---
 
@@ -155,6 +421,8 @@ Cuando publica un anuncio de venta P2P y un comprador dice que ha pagado, el sof
 - **Sin Programación Requerida**: Simplemente conecte su dispositivo y configure el método de pago — el motor maneja toda la lógica de interacción
 - **Optimización Multi-Dimensional**: Rutas de ejecución optimizadas por Dispositivo × App × Método de Pago para máxima velocidad
 - **Compatibilidad Entre Dispositivos**: Los perfiles de pago son portátiles entre dispositivos con configuraciones similares
+- **Inyección Automática de Credenciales**: Contraseñas y PINs se inyectan desde la configuración local encriptada en tiempo de ejecución — nunca se almacenan en caché intermedio
+- **Ejecución de Doble Modo**: La ejecución de pagos (transferencias salientes) y la verificación (comprobación de depósitos entrantes) usan pipelines independientes
 
 ---
 
@@ -201,6 +469,10 @@ Cuando publica un anuncio de venta P2P y un comprador dice que ha pagado, el sof
 │         │               │               │                            │
 │  ┌──────▼───────────────▼───────────────▼────────────────────────┐   │
 │  │              Capa Anti-Replay y Control de Riesgos              │   │
+│  │  ┌──────────────┐  ┌──────────────┐  ┌────────────────────┐   │   │
+│  │  │Tolerancia de│  │ Deduplicación│  │ Monitor de Saldo    │   │   │
+│  │  │Montos       │  │ de ID Trans.│  │ y Guardia Timeout   │   │   │
+│  │  └──────────────┘  └──────────────┘  └────────────────────┘   │   │
 │  └───────────────────────────────────────────────────────────────┘   │
 └──────────────────────────────┬────────────────────────────────────────┘
                                │
@@ -232,6 +504,69 @@ Cuando publica un anuncio de venta P2P y un comprador dice que ha pagado, el sof
 | Concurrencia Multi-Dispositivo | Ilimitada | Conexiones USB + WiFi híbridas |
 | Temas de UI | Oscuro / Claro | Modo oscuro y modo claro |
 | Idiomas de UI | 中文 / English | Soporte bilingüe completo |
+| Perfiles de Flujo | Almacenamiento local encriptado | Optimizado por Dispositivo × App × Método de Pago |
+
+### Autenticación API y Firma de Solicitudes
+
+El software soporta esquemas de firma de autenticación API para los tres exchanges:
+
+```python
+# [Pseudocode] HMAC-SHA256 Request Signing — Multi-platform adapter
+import hashlib, hmac, time, base64
+
+class MultiPlatformAuth:
+    """Unified multi-exchange authentication signing"""
+
+    def sign_binance(self, params: dict, secret: str) -> str:
+        """Binance: sorted query string + HMAC-SHA256"""
+        query = "&".join(f"{k}={v}" for k, v in sorted(params.items()))
+        return hmac.new(secret.encode(), query.encode(), hashlib.sha256).hexdigest()
+
+    def sign_bybit(self, timestamp: str, api_key: str, payload: str, secret: str) -> str:
+        """Bybit: timestamp + api_key + recv_window + payload"""
+        sign_str = f"{timestamp}{api_key}5000{payload}"
+        return hmac.new(secret.encode(), sign_str.encode(), hashlib.sha256).hexdigest()
+
+    def sign_okx(self, timestamp: str, method: str, path: str, body: str, secret: str) -> str:
+        """OKX: ISO8601 timestamp + method + path + body → HMAC-SHA256 → Base64"""
+        sign_str = f"{timestamp}{method}{path}{body}"
+        signature = hmac.new(secret.encode(), sign_str.encode(), hashlib.sha256).digest()
+        return base64.b64encode(signature).decode()
+```
+
+```go
+// [Pseudocode] Go style — Multi-platform API signing
+package auth
+
+import (
+    "crypto/hmac"
+    "crypto/sha256"
+    "encoding/base64"
+    "encoding/hex"
+    "fmt"
+    "sort"
+    "strings"
+)
+
+func SignBinance(params map[string]string, secret string) string {
+    keys := make([]string, 0)
+    for k := range params { keys = append(keys, k) }
+    sort.Strings(keys)
+    var parts []string
+    for _, k := range keys { parts = append(parts, fmt.Sprintf("%s=%s", k, params[k])) }
+    query := strings.Join(parts, "&")
+    mac := hmac.New(sha256.New, []byte(secret))
+    mac.Write([]byte(query))
+    return hex.EncodeToString(mac.Sum(nil))
+}
+
+func SignOKX(timestamp, method, path, body, secret string) string {
+    signStr := timestamp + method + path + body
+    mac := hmac.New(sha256.New, []byte(secret))
+    mac.Write([]byte(signStr))
+    return base64.StdEncoding.EncodeToString(mac.Sum(nil))
+}
+```
 
 ---
 
@@ -255,6 +590,13 @@ A través de su motor de adaptación inteligente de pagos, `binance&bybit&okx P2
 | 🇹🇷 Turquía | Papara, İş Bankası | Automatización inteligente |
 | 🌐 Más Mercados | Adaptable a cualquier app mediante automatización inteligente | Extensible |
 
+### Casos de Uso Típicos
+
+- 📈 **Comerciantes de Alto Volumen**: Procesamiento de docenas a cientos de órdenes P2P diarias donde las transferencias manuales son un cuello de botella
+- 🌙 **Operación Nocturna Sin Supervisión**: Procesa órdenes automáticamente durante horas fuera de servicio — nunca pierda una oportunidad
+- 📱 **Procesamiento Paralelo Multi-Dispositivo**: Múltiples teléfonos ejecutando diferentes apps de pago simultáneamente
+- 🔗 **Ciclo de Automatización Completo**: Combinado con `binance_p2p_bot` para cerrar el ciclo completo: publicación → oferta → orden → pago → verificación → liberación
+
 ---
 
 ## 🌐 Palabras Clave del Ecosistema
@@ -275,6 +617,24 @@ R: `binance&bybit&okx P2P auto_payment_bot` funciona completamente en su máquin
 R: Son complementarios:
 - [`binance_p2p_bot`](https://github.com/ApiP2P-top/binance-p2p-bot): Auto-pricing, ranking, gestión de anuncios (**gestión pre-orden**)
 - `binance&bybit&okx P2P auto_payment_bot`: Pago por orden, verificación, liberación automática (**liquidación de órdenes**)
+
+**P: ¿Cuál es la diferencia entre "Pago Automático por Orden" y la "Liberación Automática" tradicional?**
+R: Las soluciones tradicionales solo manejan el paso de liberación (el comprador dice que pagó → verificar → liberar). `binance&bybit&okx P2P auto_payment_bot` va más allá con el **pago automático por orden**: cuando recibe una orden de compra, el software ejecuta automáticamente la transferencia en la app de pago — sin operación manual. Es una de las pocas herramientas que logra la tríada completa de **pago + verificación + liberación**.
+
+**P: ¿Cómo previene liberaciones incorrectas (control de riesgos)?**
+R: Protección multi-capa: (1) Coincidencia precisa de montos con tolerancia configurable; (2) Deduplicación global de ID de transacción (retención de 180 días); (3) Protección por tiempo límite; (4) Monitoreo de saldo. Toda la lógica se ejecuta localmente.
+
+**P: ¿Qué aplicaciones de pago son soportadas?**
+R: Teóricamente cualquier app de pago Android — mediante el motor de adaptación inteligente, el software se adapta automáticamente a cualquier app (Maya, GCash, Alipay, WeChat Pay, PhonePe, Dana, etc.). Sin programación — simplemente configure su método de pago y el motor se encarga del resto. Visite [apip2p.top](https://apip2p.top) para más detalles.
+
+**P: ¿Perderé mi configuración si reinicio mi computadora?**
+R: No. Todas las configuraciones (claves API, información de dispositivos, perfiles de flujo, registros de transacciones) se escriben en archivos locales en tiempo real. El bot restaura automáticamente su configuración exacta al reiniciar.
+
+**P: ¿Qué stack tecnológico usa `binance&bybit&okx P2P auto_payment_bot`?**
+R: Construido con Python para una experiencia de escritorio nativa. Arquitectura multi-hilo para control concurrente de dispositivos. HMAC-SHA256 asegura las comunicaciones API. Base de datos local para deduplicación. Sin servidores externos ni servicios de terceros.
+
+**P: ¿Soporta activos volátiles (BTC, ETH)?**
+R: Sí. La lógica de pago y verificación opera sobre montos fiduciarios, independientemente del criptoactivo. Para anuncios BTC/ETH, recomendamos combinar con la función Spot Market Sync de [`binance_p2p_bot`](https://github.com/ApiP2P-top/binance-p2p-bot).
 
 ---
 
