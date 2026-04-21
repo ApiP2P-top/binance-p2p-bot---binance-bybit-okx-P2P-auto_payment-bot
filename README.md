@@ -30,6 +30,8 @@ The ultimate automated order settlement solution engineered for P2P merchants (a
 
 ## 📝 Overview & Architecture
 
+<img width="1315" height="846" alt="TR3" src="https://github.com/user-attachments/assets/669affee-5698-4b92-bab5-67b847c8c943" />
+
 <img width="1360" height="881" alt="2" src="https://github.com/user-attachments/assets/b2c18af8-6b0f-4062-a947-bb10e99aeed7" />
 
 `binance&bybit&okx P2P auto_payment_bot` is a professional-grade **local desktop automation client** built specifically for P2P Merchants (Advertisers) operating on **Binance**, **Bybit**, and **OKX**.
