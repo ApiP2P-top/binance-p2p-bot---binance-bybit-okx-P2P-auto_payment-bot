@@ -29,6 +29,8 @@ La solución definitiva de liquidación automática de órdenes diseñada para c
 ---
 
 ## 📝 Descripción General y Arquitectura
+
+<img width="1315" height="846" alt="TR3" src="https://github.com/user-attachments/assets/669affee-5698-4b92-bab5-67b847c8c943" />
 <img width="1360" height="881" alt="2" src="https://github.com/user-attachments/assets/b2c18af8-6b0f-4062-a947-bb10e99aeed7" />
 
 
