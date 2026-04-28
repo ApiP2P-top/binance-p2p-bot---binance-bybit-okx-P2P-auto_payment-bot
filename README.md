@@ -14,7 +14,7 @@
 
 # [P2P Auto Payment & Release Bot (Binance & Bybit & OKX) Official Site](https://apip2p.top)
 
-## 🎬 Video Demo
+## 🎬 Video  Demo
 
 
 https://github.com/user-attachments/assets/262a41b2-cdcc-4abd-8c8e-4bdb1b566a03
@@ -28,7 +28,7 @@ The ultimate automated order settlement solution engineered for P2P merchants (a
 
 ---
 
-## 📝 Overview & Architecture
+## 📝 Overview &  Architecture
 
 <img width="1315" height="846" alt="TR3" src="https://github.com/user-attachments/assets/669affee-5698-4b92-bab5-67b847c8c943" />
 
